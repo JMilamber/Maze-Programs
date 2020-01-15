@@ -82,7 +82,7 @@ def createNewCells(mazeS, hallS):
     return cellLs
 # End of createNewCells()
 
-def printM(win, m, h):
+def SaveM(win, m, h):
     maze_name = tkinter.simpledialog.askstring("Maze Title", "New Maze = ")
     time.sleep(.16)
     workingDir = os.getcwd()
@@ -382,7 +382,7 @@ def draw(mS2, hS2, cellLd, t, p):
     message.draw(win)
     g = 0
     if p.lower() == "yes":
-        printM(win, mS2, hS2)
+        SaveM(win, mS2, hS2)
     if p.lower() == "yes":
         pass
     else:
@@ -417,15 +417,15 @@ def main():
     wtB.insert(0,'no')
 
 
-    def printIt():
+    def Save-It():
         p = "yes"
-        draws2(p)
+        C_draw(p)
 
-    def draws():
+    def D_Save_It():
         p = "no"
-        draws2(p)
+        C_draw(p)
 
-    def draws2(p):
+    def C_draw(p):
         mazeSizeStr = mazeSEntry.get()
         hallSizeStr = hallSEntry.get()
         mazeSizec = stringToNumber.strToInt(mazeSizeStr)
@@ -468,10 +468,10 @@ def main():
         draw(mazeSize, hallSize, cellList, t, p)
         main.deiconify()
 
-    drawMaze = tkinter.Button(main, text="Draw Maze", command=draws)
-    drawMaze.grid(row=2, column=3)
-    printMaze = tkinter.Button(main, text="Print Maze", command=printIt)
-    printMaze.grid(row=3, column=3)
+    Draw_Maze = tkinter.Button(main, text="Draw Maze", command=D_Save_It)
+    Draw_Maze.grid(row=2, column=3)
+    Save_Maze = tkinter.Button(main, text="Save Maze", command=Save_It)
+    Save_Maze.grid(row=3, column=3)
     quit = tkinter.Button(main, text="Quit", command=main.quit)
     quit.grid(row=4, column=3)
     tkinter.mainloop()
