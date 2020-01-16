@@ -409,7 +409,7 @@ def main():
 
     draw_Maze = tkinter.Button(main, text="Draw Maze", command=D_Save_It)
     draw_Maze.grid(row=2, column=3)
-    Save_Maze = tkinter.Button(main, text="Print Maze", command=Save_It)
+    Save_Maze = tkinter.Button(main, text="Save Maze", command=Save_It)
     Save_Maze.grid(row=3, column=3)
 
     quit = tkinter.Button(main, text="Quit", command=main.quit)

@@ -28,361 +28,361 @@ import pyautogui
 
 
 
-def checkMazeSize(mS):
-    if 100 <= mS <= 800:
+def check_Maze_Size(m_S):
+    if 100 <= m_S <= 800:
         #checks if the mazeSize is a usable value.
-        mazeSizeRemainder = mS % 50
+        maze_Size_Remainder = m_S % 50
         #find how far from the next highest multiple of 50 we are.
-        if mazeSizeRemainder > 0:
+        if maze_Size_Remainder > 0:
             #if the mazesize is not an exact multiple of 50, round it up to the
             #next highest multiple of 50
-            mS = mS + (50 - mazeSizeRemainder)
+            m_S = m_S + (50 - maze_Size_Remainder)
         else:
             pass
     else:
         #if the maze Size is not a usable value, set it to zero so that it calls
         #a warning message and fails to draw.
-        mS = 0
+        m_S = 0
 
-    return mS
+    return m_S
 # End of getMazeSize()
 
-def checkHallSize(hS):
+def check_Hall_Size(h_S):
     #Checks if the mazesize is a usable value.
 
-    if 0 < hS <= 50:
-        if hS < 7:
-            hS = 5
-        elif hS < 17:
-            hS = 10
-        elif hS < 37:
-            hS = 25
+    if 0 < h_S <= 50:
+        if h_S < 7:
+            h_S = 5
+        elif h_S < 17:
+            h_S = 10
+        elif h_S < 37:
+            h_S = 25
         else:
-            hS = 50
+            h_S = 50
     else:
         #if it is not a usable value, return -1 to call the warning message.
-        hS = -1
+        h_S = -1
 
-    return hS
+    return h_S
 # End of getHallSize()
 
-def createNewCells(mazeS, hallS):
-    cellLs = []
-    mH = mazeS / hallS
-    mazeStart = (random.randint(0,(mH) - 1))
-    mazeEnd = (random.randint(mH * mH - mH, (mH * mH) - 1))
-    for i in range(0, int(mH * mH)):
-        if i == mazeStart:
-            cellLs.append(2)
-        elif i == mazeEnd:
-            cellLs.append(3)
+def create_New_Cells(mazeS, hallS):
+    cell_Ls = []
+    m_H = mazeS / hallS
+    maze_Start = (random.randint(0,(m_H) - 1))
+    maze_End = (random.randint(m_H * m_H - m_H, (m_H * m_H) - 1))
+    for i in range(0, int(m_H * m_H)):
+        if i == maze_Start:
+            cell_Ls.append(2)
+        elif i == maze_End:
+            cell_Ls.append(3)
         else:
-            cellLs.append(0)
-        #print(cellLs)
-    return cellLs
-# End of createNewCells()
+            cell_Ls.append(0)
+        #print(cell_Ls)
+    return cell_Ls
+# End of create_New_Cells()
 
-def SaveM(win, m, h):
+def Save_M(win, m, h):
     maze_name = tkinter.simpledialog.askstring("Maze Title", "New Maze = ")
     time.sleep(.16)
-    workingDir = os.getcwd()
-    os.chdir(workingDir + "\\Mazes")
+    working_Dir = os.getcwd()
+    os.chdir(working_Dir + "\\Mazes")
     x, y = win.windowInfo()
     im = pyautogui.screenshot(region=(x + 10, y + 75, m + 109, m + 25))
     name = "Maze_" + maze_name + "_" + str(m) + "x" + str(h) + ".png"
     im.save(name)
-    os.chdir(workingDir)
+    os.chdir(working_Dir)
 
-def draw(mS2, hS2, cellLd, t, p):
-    win = GraphWin("Maze Window", mS2 + 110, mS2 + 120)
-    win.windowGeo(mS2 + 110, mS2 + 120, 50, 50)
+def draw(m_S_2, h_S_2, cell_Ld, t, p):
+    win = GraphWin("Maze Window", m_S_2 + 110, m_S_2 + 120)
+    win.windowGeo(m_S_2 + 110, m_S_2 + 120, 50, 50)
     win.setBackground(color_rgb(255, 255, 255))
-    rect = Rectangle(Point(54, 54), Point(mS2 + 56, mS2 + 56))
+    rect = Rectangle(Point(54, 54), Point(m_S_2 + 56, m_S_2 + 56))
     rect.setFill(color_rgb(240, 240, 240))
     rect.setOutline(color_rgb(240, 240, 240))
     rect.draw(win)
-    loadBarOutline = Rectangle(Point(54, mS2 + 90), Point(mS2 + 55, mS2 + 100))
-    loadBarOutline.setFill(color_rgb(240, 240, 240))
-    loadBarOutline.setOutline(color_rgb(0,0,0))
-    loadBarOutline.draw(win)
+    load_Bar_Outline = Rectangle(Point(54, m_S_2 + 90), Point(m_S_2 + 55, m_S_2 + 100))
+    load_Bar_Outline.setFill(color_rgb(240, 240, 240))
+    load_Bar_Outline.setOutline(color_rgb(0,0,0))
+    load_Bar_Outline.draw(win)
     start = 0
-    drawing_Msg = Text(Point(mS2/2 + 55, mS2 + 75), "Drawing...")
+    drawing_Msg = Text(Point(m_S_2/2 + 55, m_S_2 + 75), "Drawing...")
     drawing_Msg.draw(win)
-    cellZ = int(mS2/hS2)
-    nextCell = 0
-    failLs = [0, 0, 0, 0]
-    uCells =[]
+    cell_Z = int(m_S_2/h_S_2)
+    next_Cell = 0
+    fail_Ls = [0, 0, 0, 0]
+    used_Cells =[]
     z = 0
     y = 55
     x = 55
     dir = 0
-    fR = 0
+    dead_end_count = 0
     clear = 0
     l = 0
 
-    for i in range(0, int(cellZ) + 1):
-        grid = Line(Point(x,y), Point(x, mS2 + y))
+    for i in range(0, int(cell_Z) + 1):
+        grid = Line(Point(x,y), Point(x, m_S_2 + y))
         grid.setFill(color_rgb(0,0,0))
         grid.setWidth(2)
         grid.draw(win)
-        x = x + hS2
+        x = x + h_S_2
     x = 55
 
-    for i in range(0, int(cellZ) + 1):
-        grid = Line(Point(x,y), Point(mS2 + x, y))
+    for i in range(0, int(cell_Z) + 1):
+        grid = Line(Point(x,y), Point(m_S_2 + x, y))
         grid.setFill(color_rgb(0,0,0))
         grid.setWidth(2)
         grid.draw(win)
-        y = y + hS2
+        y = y + h_S_2
     y = 55
 
-    for c in cellLd:
+    for c in cell_Ld:
         if c == 2:
-            cellLd[z] = 0
+            cell_Ld[z] = 0
             start = z
-            fc = Line(Point(x, y + (hS2 * z) + hS2 - 1), Point(x, y + (hS2 * z) + 1))
-            fc.setFill(color_rgb(240, 240, 240))
-            fc.setWidth(2)
-            fc.draw(win)
-            startMsg = Text(Point(x - 30, y + (hS2 * z) + hS2 - (hS2/2)), "Start->")
-            startMsg.draw(win)
+            First_Line = Line(Point(x, y + (h_S_2 * z) + h_S_2 - 1), Point(x, y + (h_S_2 * z) + 1))
+            First_Line.setFill(color_rgb(240, 240, 240))
+            First_Line.setWidth(2)
+            First_Line.draw(win)
+            start_Msg = Text(Point(x - 30, y + (h_S_2 * z) + h_S_2 - (h_S_2/2)), "Start->")
+            start_Msg.draw(win)
 
         elif c == 3:
-            cCellx = math.floor(z/cellZ)
-            if z > cellZ:
-                cCelly = z - (cellZ * math.floor(z/cellZ))
-            elif z == cellZ:
-                cCelly = 0
+            c_Cell_x = math.floor(z/cell_Z)
+            if z > cell_Z:
+                c_Cell_y = z - (cell_Z * math.floor(z/cell_Z))
+            elif z == cell_Z:
+                c_Cell_y = 0
             else:
-                cCelly = cCell
-            cellLd[z] = 0
-            fc = Line(Point(x + (cCellx * hS2) + hS2, y + (hS2 * cCelly) + 1), Point(x + (cCellx * hS2) + hS2, y + (hS2 * cCelly) + hS2 - 1))
-            fc.setFill(color_rgb(240, 240, 240))
-            fc.setWidth(2)
-            fc.draw(win)
-            endMsg = Text(Point(x + (cCellx * hS2) + hS2 + 30, y + (hS2 * cCelly) + (hS2/2)), "<-End")
-            endMsg.draw(win)
+                c_Cell_y = c_Cell
+            cell_Ld[z] = 0
+            Second_Line = Line(Point(x + (c_Cell_x * h_S_2) + h_S_2, y + (h_S_2 * c_Cell_y) + 1), Point(x + (c_Cell_x * h_S_2) + h_S_2, y + (h_S_2 * c_Cell_y) + h_S_2 - 1))
+            Second_Line.setFill(color_rgb(240, 240, 240))
+            Second_Line.setWidth(2)
+            Second_Line.draw(win)
+            end_Msg = Text(Point(x + (c_Cell_x * h_S_2) + h_S_2 + 30, y + (h_S_2 * c_Cell_y) + (h_S_2/2)), "<-End")
+            end_Msg.draw(win)
 
         else:
             pass
         z = z + 1
 
-    loadbar = Rectangle(Point(54, mS2 + 91), Point(((cellLd.count(1)/(cellZ ** 2)) * mS2) + 54, mS2 + 100))
-    loadbar.setFill(color_rgb(150, 150, 150))
-    loadbar.draw(win)
-    loadbar2 = Rectangle(Point(54, mS2 + 91), Point(((cellLd.count(1)/(cellZ ** 2)) * mS2) + 54, mS2 + 100))
-    loadbar2.setFill(color_rgb(150, 150, 150))
-    loadbar2.draw(win)
-    loadbar2.undraw()
+    load_bar = Rectangle(Point(54, m_S_2 + 91), Point(((cell_Ld.count(1)/(cell_Z ** 2)) * m_S_2) + 54, m_S_2 + 100))
+    load_bar.setFill(color_rgb(150, 150, 150))
+    load_bar.draw(win)
+    load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point(((cell_Ld.count(1)/(cell_Z ** 2)) * m_S_2) + 54, m_S_2 + 100))
+    load_bar_2.setFill(color_rgb(150, 150, 150))
+    load_bar_2.draw(win)
+    load_bar_2.undraw()
 
-    nextCell = start + (cellZ)
-    cellLd[start] = 1
-    fc = Line(Point(x + hS2 , y + (hS2 * start) + 1), Point(x + hS2 ,y + (hS2 * start) + hS2 - 1))
-    fc.setFill(color_rgb(240, 240, 240))
-    fc.setWidth(2)
-    fc.draw(win)
+    next_Cell = start + (cell_Z)
+    cell_Ld[start] = 1
+    Third_Line = Line(Point(x + h_S_2 , y + (h_S_2 * start) + 1), Point(x + h_S_2 ,y + (h_S_2 * start) + h_S_2 - 1))
+    Third_Line.setFill(color_rgb(240, 240, 240))
+    Third_Line.setWidth(2)
+    Third_Line.draw(win)
     time.sleep(.2)
     if l == 0:
-        loadbar2 = Rectangle(Point(54, mS2 + 91), Point(((cellLd.count(1)/(cellZ ** 2)) * mS2) + 54, mS2 + 100))
-        loadbar2.draw(win)
-        loadbar.undraw()
+        load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point(((cell_Ld.count(1)/(cell_Z ** 2)) * m_S_2) + 54, m_S_2 + 100))
+        load_bar_2.draw(win)
+        load_bar.undraw()
         l = 1
     else:
-        loadbar = Rectangle(Point(54, mS2 + 91), Point(((cellLd.count(1)/(cellZ ** 2)) * mS2) + 54, mS2 + 100))
-        loadbar.draw(win)
-        loadbar2.undraw()
+        load_bar = Rectangle(Point(54, m_S_2 + 91), Point(((cell_Ld.count(1)/(cell_Z ** 2)) * m_S_2) + 54, m_S_2 + 100))
+        load_bar.draw(win)
+        load_bar_2.undraw()
         l = 0
 
-    #print(cellLd.count(1), "/", cellZ * cellZ)
-    #print(start, "-->", nextCell)
-    cCell = nextCell
-    cellLd[nextCell] = 1
+    #print(cell_Ld.count(1), "/", cell_Z * cell_Z)
+    #print(start, "-->", next_Cell)
+    c_Cell = next_Cell
+    cell_Ld[next_Cell] = 1
     if l == 0:
-        loadbar2 = Rectangle(Point(54, mS2 + 91), Point(((cellLd.count(1)/(cellZ ** 2)) * mS2) + 54, mS2 + 100))
-        loadbar2.draw(win)
-        loadbar.undraw()
+        load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point(((cell_Ld.count(1)/(cell_Z ** 2)) * m_S_2) + 54, m_S_2 + 100))
+        load_bar_2.draw(win)
+        load_bar.undraw()
         l = 1
     else:
-        loadbar = Rectangle(Point(54, mS2 + 91), Point(((cellLd.count(1)/(cellZ ** 2)) * mS2) + 54, mS2 + 100))
-        loadbar.draw(win)
-        loadbar2.undraw()
+        load_bar = Rectangle(Point(54, m_S_2 + 91), Point(((cell_Ld.count(1)/(cell_Z ** 2)) * m_S_2) + 54, m_S_2 + 100))
+        load_bar.draw(win)
+        load_bar_2.undraw()
         l = 0
-    cCellx = 0
-    cCelly = 0
-    oneHallway = 0
-    loadP = 55/22
+    c_Cell_x = 0
+    c_Cell_y = 0
+    one_Hallway = 0
+    load_Percent = 55/22
 
 
-    while 0 in cellLd:
+    while 0 in cell_Ld:
         dir = random.randint(0,3)
-        cCellx = math.floor(cCell/cellZ)
-        if cCell > cellZ:
-            cCelly = cCell - (cellZ * math.floor(cCell/cellZ))
-        elif cCell == cellZ:
-            cCelly = 0
+        c_Cell_x = math.floor(c_Cell/cell_Z)
+        if c_Cell > cell_Z:
+            c_Cell_y = c_Cell - (cell_Z * math.floor(c_Cell/cell_Z))
+        elif c_Cell == cell_Z:
+            c_Cell_y = 0
         else:
-            cCelly = cCell
+            c_Cell_y = c_Cell
 
         if dir == 0:
-            nextCell = cCell - 1
-            if nextCell > -1 and (cCell % cellZ) != 0 and cellLd[nextCell] == 0:
-                wall = Line(Point(x + (cCellx * hS2) + 1, y + (hS2 * cCelly)), Point(x + (cCellx * hS2) + hS2 - 1, y + (hS2 * cCelly)))
+            next_Cell = c_Cell - 1
+            if next_Cell > -1 and (c_Cell % cell_Z) != 0 and cell_Ld[next_Cell] == 0:
+                wall = Line(Point(x + (c_Cell_x * h_S_2) + 1, y + (h_S_2 * c_Cell_y)), Point(x + (c_Cell_x * h_S_2) + h_S_2 - 1, y + (h_S_2 * c_Cell_y)))
                 wall.setFill(color_rgb(240, 240, 240))
                 wall.setWidth(2)
                 wall.draw(win)
-                cellLd[nextCell] = 1
-                loadP = cellLd.count(1)/(cellZ ** 2)
+                cell_Ld[next_Cell] = 1
+                load_Percent = cell_Ld.count(1)/(cell_Z ** 2)
                 if l == 0:
-                    loadbar2 = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar2.draw(win)
-                    loadbar.undraw()
+                    load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar_2.draw(win)
+                    load_bar.undraw()
                     l = 1
                 else:
-                    loadbar = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar.draw(win)
-                    loadbar2.undraw()
+                    load_bar = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar.draw(win)
+                    load_bar_2.undraw()
                     l = 0
-                #print(cCell, "-->", nextCell)
-                uCells.append(cCell)
-                cCell = nextCell
+                #print(c_Cell, "-->", next_Cell)
+                used_Cells.append(c_Cell)
+                c_Cell = next_Cell
                 if t == 1:
                     time.sleep(.08)
 
-                if failLs.count(0) != 4:
-                    failLs.clear()
+                if fail_Ls.count(0) != 4:
+                    fail_Ls.clear()
                     for i in range(0,4):
-                        failLs.append(0)
-                oneHallway = oneHallway + 1
+                        fail_Ls.append(0)
+                one_Hallway = one_Hallway + 1
             else:
-                failLs[0] = 1
+                fail_Ls[0] = 1
 
         elif dir == 1:
-            nextCell = cCell + cellZ
-            if nextCell < (cellZ * cellZ) and cellLd[nextCell] == 0:
-                wall = Line(Point(x + (cCellx * hS2) + hS2, y + (hS2 * cCelly) + 1), Point(x + (cCellx * hS2) + hS2, y + (hS2 * cCelly) + hS2 - 1))
+            next_Cell = c_Cell + cell_Z
+            if next_Cell < (cell_Z * cell_Z) and cell_Ld[next_Cell] == 0:
+                wall = Line(Point(x + (c_Cell_x * h_S_2) + h_S_2, y + (h_S_2 * c_Cell_y) + 1), Point(x + (c_Cell_x * h_S_2) + h_S_2, y + (h_S_2 * c_Cell_y) + h_S_2 - 1))
                 wall.setFill(color_rgb(240, 240, 240))
                 wall.setWidth(2)
                 wall.draw(win)
-                cellLd[nextCell] = 1
-                loadP = cellLd.count(1)/(cellZ ** 2)
+                cell_Ld[next_Cell] = 1
+                load_Percent = cell_Ld.count(1)/(cell_Z ** 2)
                 if l == 0:
-                    loadbar2 = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar2.draw(win)
-                    loadbar.undraw()
+                    load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar_2.draw(win)
+                    load_bar.undraw()
                     l = 1
                 else:
-                    loadbar = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar.draw(win)
-                    loadbar2.undraw()
+                    load_bar = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar.draw(win)
+                    load_bar_2.undraw()
                     l = 0
-                #print(cCell, "-->", nextCell)
-                uCells.append(cCell)
-                cCell = nextCell
+                #print(c_Cell, "-->", next_Cell)
+                used_Cells.append(c_Cell)
+                c_Cell = next_Cell
                 if t == 1:
                     time.sleep(.08)
 
-                if failLs.count(0) != 4:
-                    failLs.clear()
+                if fail_Ls.count(0) != 4:
+                    fail_Ls.clear()
                     for i in range(0,4):
-                        failLs.append(0)
-                oneHallway = oneHallway + 1
+                        fail_Ls.append(0)
+                one_Hallway = one_Hallway + 1
             else:
-                failLs[1] = 1
+                fail_Ls[1] = 1
 
         elif dir == 2:
-            nextCell = cCell + 1
-            if nextCell < (cellZ * cellZ) and ((cCell + 1) % cellZ) != 0 and cellLd[nextCell] == 0:
-                wall = Line(Point(x + (cCellx * hS2) + hS2 - 1, y + (hS2 * cCelly) + hS2), Point(x + (cCellx * hS2) + 1, y + (hS2 * cCelly) + hS2))
+            next_Cell = c_Cell + 1
+            if next_Cell < (cell_Z * cell_Z) and ((c_Cell + 1) % cell_Z) != 0 and cell_Ld[next_Cell] == 0:
+                wall = Line(Point(x + (c_Cell_x * h_S_2) + h_S_2 - 1, y + (h_S_2 * c_Cell_y) + h_S_2), Point(x + (c_Cell_x * h_S_2) + 1, y + (h_S_2 * c_Cell_y) + h_S_2))
                 wall.setFill(color_rgb(240, 240, 240))
                 wall.setWidth(2)
                 wall.draw(win)
-                cellLd[nextCell] = 1
-                loadP = cellLd.count(1)/(cellZ ** 2)
+                cell_Ld[next_Cell] = 1
+                load_Percent = cell_Ld.count(1)/(cell_Z ** 2)
                 if l == 0:
-                    loadbar2 = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar2.draw(win)
-                    loadbar.undraw()
+                    load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar_2.draw(win)
+                    load_bar.undraw()
                     l = 1
                 else: #l can only be 0 or 1, hence when it is not 0 it is 1
-                    loadbar = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar.draw(win)
-                    loadbar2.undraw()
+                    load_bar = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar.draw(win)
+                    load_bar_2.undraw()
                     l = 0
-                #print(cCell, "-->", nextCell)
-                uCells.append(cCell)
-                cCell = nextCell
+                #print(c_Cell, "-->", next_Cell)
+                used_Cells.append(c_Cell)
+                c_Cell = next_Cell
                 if t == 1:
                     time.sleep(.08)
 
-                if failLs.count(0) != 4:
-                    failLs.clear()
+                if fail_Ls.count(0) != 4:
+                    fail_Ls.clear()
                     for i in range(0,4):
-                        failLs.append(0)
-                oneHallway = oneHallway + 1
+                        fail_Ls.append(0)
+                one_Hallway = one_Hallway + 1
             else:
-                failLs[2] = 1
+                fail_Ls[2] = 1
 
         elif dir == 3:
-            nextCell = cCell - cellZ
-            if nextCell > -1 and cellLd[nextCell] == 0:
-                wall = Line(Point(x + (cCellx * hS2), y + (hS2 * cCelly) + hS2 - 1), Point(x + (cCellx * hS2), y + (hS2 * cCelly) + 1))
+            next_Cell = c_Cell - cell_Z
+            if next_Cell > -1 and cell_Ld[next_Cell] == 0:
+                wall = Line(Point(x + (c_Cell_x * h_S_2), y + (h_S_2 * c_Cell_y) + h_S_2 - 1), Point(x + (c_Cell_x * h_S_2), y + (h_S_2 * c_Cell_y) + 1))
                 wall.setFill(color_rgb(240, 240, 240))
                 wall.setWidth(2)
                 wall.draw(win)
-                cellLd[nextCell] = 1
-                loadP = cellLd.count(1)/(cellZ ** 2)
+                cell_Ld[next_Cell] = 1
+                load_Percent = cell_Ld.count(1)/(cell_Z ** 2)
                 if l == 0:
-                    loadbar2 = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar2.draw(win)
-                    loadbar.undraw()
+                    load_bar_2 = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar_2.draw(win)
+                    load_bar.undraw()
                     l = 1
                 else:
-                    loadbar = Rectangle(Point(54, mS2 + 91), Point((loadP * mS2) + 54, mS2 + 100))
-                    loadbar.draw(win)
-                    loadbar2.undraw()
+                    load_bar = Rectangle(Point(54, m_S_2 + 91), Point((load_Percent * m_S_2) + 54, m_S_2 + 100))
+                    load_bar.draw(win)
+                    load_bar_2.undraw()
                     l = 0
-                #print(cCell, "-->", nextCell)
-                uCells.append(cCell)
-                cCell = nextCell
+                #print(c_Cell, "-->", next_Cell)
+                used_Cells.append(c_Cell)
+                c_Cell = next_Cell
                 if t == 1:
                     time.sleep(.08)
 
-                if failLs.count(0) != 4:
-                    failLs.clear()
+                if fail_Ls.count(0) != 4:
+                    fail_Ls.clear()
                     for i in range(0,4):
-                        failLs.append(0)
-                oneHallway = oneHallway + 1
+                        fail_Ls.append(0)
+                one_Hallway = one_Hallway + 1
             else:
-                failLs[3] = 1
+                fail_Ls[3] = 1
 
-        if (failLs.count(1) == 4) or (oneHallway == cellZ):
-            randoCell = 0
-            failLs.clear()
-            if oneHallway == cellZ:
+        if (fail_Ls.count(1) == 4) or (one_Hallway == cell_Z):
+            rando_Cell = 0
+            fail_Ls.clear()
+            if one_Hallway == cell_Z:
                 #print("Long Hallway Check")
-                fR = 3
-                oneHallway = 0
+                dead_end_count = 3
+                one_Hallway = 0
             for i in range(0,4):
-                failLs.append(0)
-            if len(uCells) > 0:
+                fail_Ls.append(0)
+            if len(used_Cells) > 0:
                 #print("Backtracking....")
-                cCell = uCells.pop(len(uCells) - 1)
-                #print(cellLd.count(1), "/", cellZ * cellZ)
-                fR = fR + 1
-            if fR == 4 and len(uCells) > 0:
-                print("Current Stuck Cell: ", cCell)
-                randoCell = random.randint(0, len(uCells) - 1)
-                cCell = uCells.pop(randoCell)
-                print("Random Used Cell: ", cCell)
-                fR = 0
-            if len(uCells) == 0:
-                cCell = random.randint(0, (cellZ * cellZ) - 1)
+                c_Cell = used_Cells.pop(len(used_Cells) - 1)
+                #print(cell_Ld.count(1), "/", cell_Z * cell_Z)
+                dead_end_count = dead_end_count + 1
+            if dead_end_count == 4 and len(used_Cells) > 0:
+                print("Current Stuck Cell: ", c_Cell)
+                rando_Cell = random.randint(0, len(used_Cells) - 1)
+                c_Cell = used_Cells.pop(rando_Cell)
+                print("Random Used Cell: ", c_Cell)
+                dead_end_count = 0
+            if len(used_Cells) == 0:
+                c_Cell = random.randint(0, (cell_Z * cell_Z) - 1)
     drawing_Msg.undraw()
-    message = Text(Point(mS2/2 + 55, mS2 + 75), "Finished!")
+    message = Text(Point(m_S_2/2 + 55, m_S_2 + 75), "Finished!")
     message.draw(win)
     g = 0
     if p.lower() == "yes":
-        SaveM(win, mS2, hS2)
+        Save_M(win, m_S_2, h_S_2)
     if p.lower() == "yes":
         pass
     else:
@@ -392,32 +392,32 @@ def draw(mS2, hS2, cellLd, t, p):
 
 def main():
     main = tkinter.Tk()
-    mazeSizeStr = tkinter.StringVar()
-    hallSizeStr = tkinter.StringVar()
+    maze_Size_Str = tkinter.StringVar()
+    hall_Size_Str = tkinter.StringVar()
     t = 0
-    mainLabel = tkinter.Label(main, text="Modified Recursive Algorithm").grid(row=0, column=1, columnspan=1)
-    mazeLabel = tkinter.Label(main, text="  Maze Size: ").grid(row=2, column=0)
-    hallLabel = tkinter.Label(main, text="   Hall Size: ").grid(row=3, column=0)
-    wtBLabel = tkinter.Label(main, text="   Watch Maze? ").grid(row=4, column=0)
+    main_Label = tkinter.Label(main, text="Modified Recursive Algorithm").grid(row=0, column=1, columnspan=1)
+    maze_Label = tkinter.Label(main, text="  Maze Size: ").grid(row=2, column=0)
+    hall_Label = tkinter.Label(main, text="   Hall Size: ").grid(row=3, column=0)
+    w_t_B_Label = tkinter.Label(main, text="   Watch Maze? ").grid(row=4, column=0)
     filler = tkinter.Label(main, text="                       |      ").grid(row=1, column=2)
-    filler2 = tkinter.Label(main, text="(100-800)         |        ").grid(row=2, column=2)
-    filler3 = tkinter.Label(main, text="(5/15/25/50)   |        ").grid(row=3, column=2)
-    filler4 = tkinter.Label(main, text="(yes/no)          |        ").grid(row=4, column=2)
-    fillerSide = tkinter.Label(main, text="          ").grid(row=0, column=4)
-    fillerBottom = tkinter.Label(main, text="          ").grid(row=5, column=0)
-    fillerTop = tkinter.Label(main, text="          ").grid(row=0, column=0)
-    mazeSEntry = tkinter.Entry(main)
-    hallSEntry = tkinter.Entry(main)
-    wtB = tkinter.Entry(main)
-    mazeSEntry.grid(row=2, column=1)
-    hallSEntry.grid(row=3, column=1)
-    wtB.grid(row=4, column=1)
-    mazeSEntry.insert(0,'500')
-    hallSEntry.insert(0,'25')
-    wtB.insert(0,'no')
+    filler_2 = tkinter.Label(main, text="(100-800)         |        ").grid(row=2, column=2)
+    filler_3 = tkinter.Label(main, text="(5/15/25/50)   |        ").grid(row=3, column=2)
+    filler_4 = tkinter.Label(main, text="(yes/no)          |        ").grid(row=4, column=2)
+    filler_Side = tkinter.Label(main, text="          ").grid(row=0, column=4)
+    filler_Bottom = tkinter.Label(main, text="          ").grid(row=5, column=0)
+    filler_Top = tkinter.Label(main, text="          ").grid(row=0, column=0)
+    maze_S_Entry = tkinter.Entry(main)
+    hall_S_Entry = tkinter.Entry(main)
+    w_t_B = tkinter.Entry(main)
+    maze_S_Entry.grid(row=2, column=1)
+    hall_S_Entry.grid(row=3, column=1)
+    w_t_B.grid(row=4, column=1)
+    maze_S_Entry.insert(0,'500')
+    hall_S_Entry.insert(0,'25')
+    w_t_B.insert(0,'no')
 
 
-    def Save-It():
+    def Save_It():
         p = "yes"
         C_draw(p)
 
@@ -426,46 +426,46 @@ def main():
         C_draw(p)
 
     def C_draw(p):
-        mazeSizeStr = mazeSEntry.get()
-        hallSizeStr = hallSEntry.get()
-        mazeSizec = stringToNumber.strToInt(mazeSizeStr)
-        print(mazeSizec)
-        hallSizec = stringToNumber.strToInt(hallSizeStr)
-        print(hallSizec)
-        mazeSize = checkMazeSize(mazeSizec)
-        hallSize = checkHallSize(hallSizec)
+        maze_Size_Str = maze_S_Entry.get()
+        hall_Size_Str = hall_S_Entry.get()
+        maze_Size_c = stringToNumber.strToInt(maze_Size_Str)
+        print(maze_Size_c)
+        hall_Size_c = stringToNumber.strToInt(hall_Size_Str)
+        print(hall_Size_c)
+        maze_Size = check_Maze_Size(maze_Size_c)
+        hall_Size = check_Hall_Size(hall_Size_c)
 
-        if mazeSize == 0:
+        if maze_Size == 0:
             messagebox.showwarning("Invalid Maze Size Entry","Please enter a number between 100 and 800")
             return
 
-        if hallSize == -1:
+        if hall_Size == -1:
             messagebox.showwarning("Invalid Hall Size Entry","Please enter a number between 0 and 50")
             return
 
-        if mazeSize < 200:
-            if hallSize == 50:
-                hallSize = 25
-        cellList = []
-        cellList = createNewCells(mazeSize, hallSize)
-        print(cellList)
-        if wtB.get().lower() == "yes":
+        if maze_Size < 200:
+            if hall_Size == 50:
+                hall_Size = 25
+        cell_List = []
+        cell_List = create_New_Cells(maze_Size, hall_Size)
+        print(cell_List)
+        if w_t_B.get().lower() == "yes":
             t = 1
-        elif wtB.get().lower() == "no":
+        elif w_t_B.get().lower() == "no":
             t = 0
-        elif wtB.get() == "":
+        elif w_t_B.get() == "":
             t = 0
         else:
             messagebox.showwarning("Invalid Entry","Please enter either yes or no")
             return
 
-        if mazeSize/hallSize > mazeSize/4:
+        if maze_Size/hall_Size > maze_Size/4:
             t = 0
         else:
             pass
         print(t)
         main.iconify()
-        draw(mazeSize, hallSize, cellList, t, p)
+        draw(maze_Size, hall_Size, cell_List, t, p)
         main.deiconify()
 
     Draw_Maze = tkinter.Button(main, text="Draw Maze", command=D_Save_It)
