@@ -15,16 +15,19 @@ import subprocess
 
 def main():
     main = tkinter.Tk()
-    workingDir = os.getcwd()
+    working_Dir = os.getcwd()
+    directory_change = ""
     def MRBA():
-        os.chdir(r"D:\My Python Programming\MazeInPython\Modified_Recursive_Algorithm")
+        directory_change = working_Dir + "\Modified_Recursive_Algorithm"
+        os.chdir(directory_change)
         subprocess.Popen(['Maze.py'], shell=True)
-        os.chdir(workingDir)
+        os.chdir(working_Dir)
 
     def RDA():
-        os.chdir(r"D:\My Python Programming\MazeInPython\Recursive_Division")
+        directory_change = working_Dir + "\Recursive_Division"
+        os.chdir(directory_change)
         subprocess.Popen(['RdMaze.py'], shell=True)
-        os.chdir(workingDir)
+        os.chdir(working_Dir)
 
     def placeHolder1():
         pass
