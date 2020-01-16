@@ -23,158 +23,158 @@ class Area:
         self.y = y_initial
         self.width = width_initial
         self.height = height_initial
-        self.isHall = 0
+        self.is_Hall = 0
 
-    def isH(self, hallS):
+    def is_H(self, hall_S):
         # method to check whether thearea is the width of a single hall
-        if (self.width == hallS) or (self.height == hallS):
-            self.isHall = 1
+        if (self.width == hall_S) or (self.height == hall_S):
+            self.is_Hall = 1
         else:
-            self.isHall = 0
+            self.is_Hall = 0
         # 1 = True, 0 = False
-        return self.isHall
+        return self.is_Hall
 
-    def size(self, mS):
+    def size(self, m_S):
         # method to check whether the area is a square or rectangle, and if it
         # is a rectangle, what its orientation is.
         if self.height > self.width:
-            return self.height/mS
+            return self.height/m_S
         elif self.width > self.height:
-            return self.width/mS
+            return self.width/m_S
         else:
-            return ((self.height/mS) + (self.width/mS)) / 2
+            return ((self.height/m_S) + (self.width/m_S)) / 2
 
-    def getX(self):
+    def get_X(self):
         return self.x
 
-    def getY(self):
+    def get_Y(self):
         return self.y
 
-    def getWidth(self):
+    def get_Width(self):
         return self.width
 
-    def getHeight(self):
+    def get_Height(self):
         return self.height
 
 
 class Wall:
 
-    def __init__(self, x11, y11, x12, y12):
-        self.x = x11
-        self.y = y11
-        self.x1 = x12
-        self.y1 = y12
+    def __init__(self, x_11, y_11, x_12, y_12):
+        self.x = x_11
+        self.y = y_11
+        self.x_1 = x_12
+        self.y_1 = y_12
 
-    def getX(self):
+    def get_X(self):
         return self.x
 
-    def getY(self):
+    def get_Y(self):
         return self.y
 
-    def getX1(self):
-        return self.x1
+    def get_X_1(self):
+        return self.x_1
 
-    def getY1(self):
-        return self.y1
+    def get_Y_1(self):
+        return self.y_1
 
-def printM(win, m, h):
+def Save_M(win, m, h):
     maze_name = tkinter.simpledialog.askstring("Maze Title", "New Maze = ")
     time.sleep(.25)
-    workingDir = os.getcwd()
-    os.chdir(workingDir + "\\Mazes")
+    working_Dir = os.getcwd()
+    os.chdir(working_Dir + "\\Mazes")
     x, y = win.windowInfo()
     im = pyautogui.screenshot(region=(x + 10, y + 75, m + 109, m + 25))
     name = "Maze_" + maze_name + "_" + str(m) + "x" + str(h) + ".png"
     im.save(name)
-    os.chdir(workingDir)
+    os.chdir(working_Dir)
 
-def checkMazeSize(mS):
+def check_Maze_Size(m_S):
     print("in check maze size")
-    if 100 <= mS <= 800:
-
+    if 100 <= m_S <= 800:
         #checks if the mazeSize is a usable value.
-        mazeSizeRemainder = mS % 50
+        maze_Size_Remainder = m_S % 50
         #find how far from the next highest multiple of 50 we are.
-        if mazeSizeRemainder > 0:
+        if maze_Size_Remainder > 0:
             #if the mazesize is not an exact multiple of 50, round it up to the
             #next highest multiple of 50
-            mS = mS + (50 - mazeSizeRemainder)
+            m_S = m_S + (50 - maze_Size_Remainder)
         else:
             pass
     else:
         #if the maze Size is not a usable value, set it to zero so that it calls
         #a warning message and fails to draw.
-        mS = 0
+        m_S = 0
 
-    return mS
+    return m_S
 # End of getMazeSize()
 
 
-def horizontalORveritcal(height, width):
+def horizontal_OR_veritcal(height, width):
     # Gets two parameters, the height and width of the area.
-    hv = 0
+    h_V = 0
     if height > width:
-        hv = 0
+        h_V = 0
     elif width > height:
-        hv = 1
+        h_V = 1
     else:
-        hV = random.randint(0,1)
-    return hv
-# End of horizontalORveritcal()
+        h_V = random.randint(0,1)
 
-def split(areaToSplit, hallS, hallArea_dict, id):
-    x = areaToSplit.getX()
-    y = areaToSplit.getY()
-    height = areaToSplit.getHeight()
-    width = areaToSplit.getWidth()
-    hV = horizontalORveritcal(height, width)
+    return h_V
+# End of horizontal_OR_veritcal()
+
+def split(area_To_Split, hall_S, hall_Area_dict, id):
+    x = area_To_Split.get_X()
+    y = area_To_Split.get_Y()
+    height = area_To_Split.get_Height()
+    width = area_To_Split.get_Width()
+    h_V = horizontal_OR_veritcal(height, width)
     # Gets whether it should cut the area horizontally(0) or vertically (1)
     id = id + 1
-    wallnum = 0
+    wall_num = 0
     walls = 0
 
-    if hV == 0:
+    if h_V == 0:
         # Horizontal
-        walls = int(height/hallS)
+        walls = int(height/hall_S)
         #print("# of H Walls in Area: ", walls - 1)
         # computes the number of walls in this area
-        wallnum = random.randint(1, walls - 1)
+        wall_num = random.randint(1, walls - 1)
         # picks a random wall from said number of walls to use
-        hallArea_dict["0" + str(id)] = Area(x, y, width, wallnum * hallS)
+        hall_Area_dict["0" + str(id)] = Area(x, y, width, wall_num * hall_S)
         id = id + 1
-        hallArea_dict["0" + str(id)] = Area(x, y + wallnum * hallS, width, height - wallnum * hallS)
+        hall_Area_dict["0" + str(id)] = Area(x, y + wall_num * hall_S, width, height - wall_num * hall_S)
 
-    elif hV == 1:
+    elif h_V == 1:
         # Vertical
-        walls = int(width/hallS)
+        walls = int(width/hall_S)
         #print("# of V Walls in Area: ", walls - 1)
         # computes the number of walls in this area
-        wallnum = random.randint(1, walls - 1)
+        wall_num = random.randint(1, walls - 1)
         # picks a random wall from said number of walls to use
-        hallArea_dict["0" + str(id)] = Area(x, y, wallnum * hallS, height)
+        hall_Area_dict["0" + str(id)] = Area(x, y, wall_num * hall_S, height)
         id = id + 1
-        hallArea_dict["0" + str(id)] = Area(x + wallnum * hallS, y, width - wallnum * hallS, height)
+        hall_Area_dict["0" + str(id)] = Area(x + wall_num * hall_S, y, width - wall_num * hall_S, height)
 
-    return hallArea_dict, hV, wallnum, id
-    # returns the then changed hallArea_dict, whether it cut horizontally or
+    return hall_Area_dict, h_V, wall_num, id
+    # returns the then changed hall_Area_dict, whether it cut horizontally or
     # vertically, and which wall it chose to add
 # End of split()
 
-def pickNewArea(hallArea_dict, hallS, mazeS):
+def pick_New_Area(hall_Area_dict, hall_S, maze_S):
     smallest = 1.1
-    areaKey = ""
+    area_Key = ""
     done = 0
     size = 0
     done_list = []
-    values_list = hallArea_dict.values()
+    values_list = hall_Area_dict.values()
     done_list.clear()
-    for key, value in hallArea_dict.items():
-        #print("value size: ", value.size(mazeS))
-        if (value.size(mazeS) < smallest) & (value.isH(hallS) == 0):
-            areaKey = key
-            smallest = value.size(mazeS)
-        elif value.isH(hallS) == 1:
-            done_list.append(value.isH(hallS))
+    for key, value in hall_Area_dict.items():
+        #print("value size: ", value.size(maze_S))
+        if (value.size(maze_S) < smallest) & (value.is_H(hall_S) == 0):
+            area_Key = key
+            smallest = value.size(maze_S)
+        elif value.is_H(hall_S) == 1:
+            done_list.append(value.is_H(hall_S))
             #print("Is Hall")
         else:
             pass
@@ -184,22 +184,22 @@ def pickNewArea(hallArea_dict, hallS, mazeS):
     else:
         done = 0
 
-    return areaKey, done
-# End of pickNewArea()
+    return area_Key, done
+# End of pick_New_Area()
 
-def draw(mazeS, hallS, p):
-    offset = int((hallS * 3)/ 2)
+def draw(maze_S, hall_S, p):
+    offset = int((hall_S * 3)/ 2)
     # value used to create a border around the maze which is empty space.
     if offset < 50:
         offset = 50
         # ensures a big enoughoffset for the start and end text.
-    win = GraphWin("Maze Window", mazeS + offset * 2, mazeS + offset * 2)
+    win = GraphWin("Maze Window", maze_S + offset * 2, maze_S + offset * 2)
     # creates window
-    win.windowGeo(mazeS + offset * 2,mazeS + offset * 2, 50, 50)
+    win.windowGeo(maze_S + offset * 2,maze_S + offset * 2, 50, 50)
     # sets the location of the window
     win.setBackground(color_rgb(255, 255, 255))
     # sets the background to white
-    rect = Rectangle(Point(offset, offset), Point(mazeS + offset, mazeS + offset))
+    rect = Rectangle(Point(offset, offset), Point(maze_S + offset, maze_S + offset))
     # creates a rectangle object that the maze will be drawn on.
     rect.setFill(color_rgb(240, 240, 240))
     # sets the color to just off-white
@@ -207,44 +207,43 @@ def draw(mazeS, hallS, p):
     # sets the outline color to black
     rect.setWidth(2)
     rect.draw(win)
-    message = Text(Point(mazeS/2 + offset , mazeS + (offset * 2) - (offset/2)), "Calculating...")
+    message = Text(Point(maze_S/2 + offset , maze_S + (offset * 2) - (offset/2)), "Calculating...")
     message.draw(win)
-    #hallS = 25
+    #hall_S = 25
     id = 0
-    hallArea_dict = {}
-    hallArea_dict["0" + str(id)] = Area(0, 0, mazeS, mazeS)
-    #print(hallArea_dict)
+    hall_Area_dict = {}
+    hall_Area_dict["0" + str(id)] = Area(0, 0, maze_S, maze_S)
+    #print(hall_Area_dict)
     walls_list = []
     passage_list = []
-    hv = 0
+    h_V = 0
     done = 0
-    wallToAdd = 0
-    wallToRemove = 0
+    wall_To_Remove = 0
     key = ""
 
 
-    mH = mazeS / hallS
-    mazeStart = (random.randint(0,(mH) - 1))
-    mazeEnd = (random.randint(0,(mH) - 1))
+    m_H = maze_S / hall_S
+    maze_Start = (random.randint(0,(m_H) - 1))
+    maze_End = (random.randint(0,(m_H) - 1))
 
-    fc = Line(Point(offset, offset + (hallS * mazeStart) + hallS - 1), Point(offset, offset + (hallS * mazeStart) + 1))
-    fc.setFill(color_rgb(240, 240, 240))
-    fc.setWidth(2)
-    fc.draw(win)
-    startMsg = Text(Point(offset/2, offset + (hallS * mazeStart) + (hallS/2)), "Start->")
-    startMsg.draw(win)
+    first_Line = Line(Point(offset, offset + (hall_S * maze_Start) + hall_S - 1), Point(offset, offset + (hall_S * maze_Start) + 1))
+    first_Line.setFill(color_rgb(240, 240, 240))
+    first_Line.setWidth(2)
+    first_Line.draw(win)
+    start_Msg = Text(Point(offset/2, offset + (hall_S * maze_Start) + (hall_S/2)), "Start->")
+    start_Msg.draw(win)
 
-    fc = Line(Point(offset + mazeS, offset + (hallS * mazeEnd) + 1), Point(offset + mazeS, offset + (hallS * mazeEnd) + hallS- 1))
-    fc.setFill(color_rgb(240, 240, 240))
-    fc.setWidth(2)
-    fc.draw(win)
-    endMsg = Text(Point(offset * 1.5 + mazeS , offset + (hallS * mazeEnd) + (hallS/2)), "<-End")
-    endMsg.draw(win)
+    first_Line = Line(Point(offset + maze_S, offset + (hall_S * maze_End) + 1), Point(offset + maze_S, offset + (hall_S * maze_End) + hall_S- 1))
+    first_Line.setFill(color_rgb(240, 240, 240))
+    first_Line.setWidth(2)
+    first_Line.draw(win)
+    end_Msg = Text(Point(offset * 1.5 + maze_S , offset + (hall_S * maze_End) + (hall_S/2)), "<-End")
+    end_Msg.draw(win)
 
     while done == 0:
         # loop to draw maze
-        wallToAdd = 0
-        key, done = pickNewArea(hallArea_dict, hallS, mazeS)
+
+        key, done = pick_New_Area(hall_Area_dict, hall_S, maze_S)
         # picks the next area for the prgoram to split.
         # returns the key for the next area and a 0 or 1 for "done" I.e. whether
         # or not the maze has been bisected as much as possible.
@@ -252,37 +251,37 @@ def draw(mazeS, hallS, p):
         if done == 0:
             # checks if the Maze is "done" 0 is false 1 is true.
 
-            areaToSplit = hallArea_dict.get(key)
-            # sets "areaToSplit" equal to the object area that we want to split,
+            area_To_Split = hall_Area_dict.get(key)
+            # sets "area_To_Split" equal to the object area that we want to split,
             # allowing us to easily call methods from the area class
 
 
-            #print("Keys: ", hallArea_dict.keys())
-            hallArea_dict, hv, wallnum, id = split(areaToSplit, hallS, hallArea_dict, id)
+            #print("Keys: ", hall_Area_dict.keys())
+            hall_Area_dict, h_V, wall_num, id = split(area_To_Split, hall_S, hall_Area_dict, id)
             # splits the rea, returning whether it was split horizontally or
-            # veritcally(hv), the id of the wall that needs to be added, and
+            # veritcally(h_V), the id of the wall that needs to be added, and
             # the id # so that it can continue to be incremented if we ever need
-            # to iterate over the hallArea_dict for a specific area.
+            # to iterate over the hall_Area_dict for a specific area.
 
-            del hallArea_dict[key]
+            del hall_Area_dict[key]
             # deletes the area we just split.
-            #print("Keys: ", hallArea_dict.keys())
+            #print("Keys: ", hall_Area_dict.keys())
 
-            if hv == 0:
+            if h_V == 0:
                 # if a horizontal wall
-                walls_list.append(Wall(areaToSplit.getX(), areaToSplit.getY() + (wallnum * hallS), areaToSplit.getX() + areaToSplit.getWidth(), areaToSplit.getY() + (wallnum * hallS)))
+                walls_list.append(Wall(area_To_Split.get_X(), area_To_Split.get_Y() + (wall_num * hall_S), area_To_Split.get_X() + area_To_Split.get_Width(), area_To_Split.get_Y() + (wall_num * hall_S)))
                 #add the new wall to the wall list, which the program uses to draw the walls after creating all of them.
-                wallToRemove = (random.randint(1, areaToSplit.getWidth()/hallS) - 1) * hallS
-                #print("H Wall to remove: ", wallToRemove/hallS)
-                passage_list.append(Wall(areaToSplit.getX() + wallToRemove + 1, areaToSplit.getY() + (wallnum * hallS), areaToSplit.getX() + wallToRemove + hallS - 1, areaToSplit.getY() + (wallnum * hallS)))
+                wall_To_Remove = (random.randint(1, area_To_Split.get_Width()/hall_S) - 1) * hall_S
+                #print("H Wall to remove: ", wall_To_Remove/hall_S)
+                passage_list.append(Wall(area_To_Split.get_X() + wall_To_Remove + 1, area_To_Split.get_Y() + (wall_num * hall_S), area_To_Split.get_X() + wall_To_Remove + hall_S - 1, area_To_Split.get_Y() + (wall_num * hall_S)))
 
-            elif hv == 1:
+            elif h_V == 1:
                 # if a vertical wall
-                walls_list.append(Wall(areaToSplit.getX() + (wallnum * hallS), areaToSplit.getY(), areaToSplit.getX() + (wallnum * hallS), areaToSplit.getY() + areaToSplit.getHeight()))
+                walls_list.append(Wall(area_To_Split.get_X() + (wall_num * hall_S), area_To_Split.get_Y(), area_To_Split.get_X() + (wall_num * hall_S), area_To_Split.get_Y() + area_To_Split.get_Height()))
                 #add the new wall to the wall list, which the program uses to draw the walls after creating all of them.
-                wallToRemove = (random.randint(1, areaToSplit.getHeight()/hallS) - 1) * hallS
-                #print("V Wall to remove: ", wallToRemove/hallS)
-                passage_list.append(Wall(areaToSplit.getX() + (wallnum * hallS), areaToSplit.getY() + wallToRemove + 1, areaToSplit.getX() + (wallnum * hallS), areaToSplit.getY() + wallToRemove + hallS - 1))
+                wall_To_Remove = (random.randint(1, area_To_Split.get_Height()/hall_S) - 1) * hall_S
+                #print("V Wall to remove: ", wall_To_Remove/hall_S)
+                passage_list.append(Wall(area_To_Split.get_X() + (wall_num * hall_S), area_To_Split.get_Y() + wall_To_Remove + 1, area_To_Split.get_X() + (wall_num * hall_S), area_To_Split.get_Y() + wall_To_Remove + hall_S - 1))
 
             else:
                 pass
@@ -304,7 +303,7 @@ def draw(mazeS, hallS, p):
     print("Escaped")
 
     message.undraw()
-    message = Text(Point(mazeS/2 + offset , mazeS + (offset * 2) - (offset/2)), "Drawing...")
+    message = Text(Point(maze_S/2 + offset , maze_S + (offset * 2) - (offset/2)), "Drawing...")
     message.draw(win)
 
     a = 0
@@ -314,21 +313,21 @@ def draw(mazeS, hallS, p):
         #if a < 3:
             #time.sleep(.5)
             #a = a + .5
-        #if hallS == 10 and mazeS > 150:
+        #if hall_S == 10 and maze_S > 150:
             #pass
-        #elif hallS == 25:
+        #elif hall_S == 25:
             #time.sleep(.05)
-        #elif mazeS < 700 and hallS == 50:
+        #elif maze_S < 700 and hall_S == 50:
             #time.sleep(.08)
-        #elif mazeS > 650 and hallS != 50:
+        #elif maze_S > 650 and hall_S != 50:
             #time.sleep(.3)
-        wall = Line(Point(W.getX() + offset, W.getY() + offset), Point(W.getX1() + offset, W.getY1()+ offset))
+        wall = Line(Point(W.get_X() + offset, W.get_Y() + offset), Point(W.get_X_1() + offset, W.get_Y_1()+ offset))
         wall.setFill(color_rgb(0, 0, 0))
         wall.setWidth(2)
         wall.draw(win)
 
         P = passage_list[f]
-        passage = Line(Point(P.getX() + offset, P.getY() + offset), Point(P.getX1() + offset, P.getY1()+ offset))
+        passage = Line(Point(P.get_X() + offset, P.get_Y() + offset), Point(P.get_X_1() + offset, P.get_Y_1()+ offset))
         passage.setFill(color_rgb(240, 240, 240))
         passage.setWidth(2)
         passage.draw(win)
@@ -336,11 +335,11 @@ def draw(mazeS, hallS, p):
 
     message.undraw()
     # draws a message indicating to the suer that the maze has finished
-    message = Text(Point(mazeS/2 + offset , mazeS + (offset * 2) - (offset/2)), "Finished!")
+    message = Text(Point(maze_S/2 + offset , maze_S + (offset * 2) - (offset/2)), "Finished!")
     message.draw(win)
 
     if p.lower() == "yes":
-        printM(win, mazeS, hallS)
+        Save_M(win, maze_S, hall_S)
 
     if p.lower() == "yes":
         pass
@@ -352,69 +351,70 @@ def draw(mazeS, hallS, p):
 def main():
     # gui steup
     main = tkinter.Tk()
-    mazeSizeStr = tkinter.StringVar()
-    hallSizeStr = tkinter.StringVar()
-    mainLabel = tkinter.Label(main, text="Recursive Division").grid(row=0, column=1, columnspan=1)
-    mazeLabel = tkinter.Label(main, text=" Maze Size:").grid(row=2, column=0)
-    hallLabel = tkinter.Label(main, text="   Hall Size: ").grid(row=3, column=0)
+    maze_Size_Str = tkinter.StringVar()
+    hall_Size_Str = tkinter.StringVar()
+    main_Label = tkinter.Label(main, text="Recursive Division").grid(row=0, column=1, columnspan=1)
+    maze_Label = tkinter.Label(main, text=" Maze Size:").grid(row=2, column=0)
+    hall_Label = tkinter.Label(main, text="   Hall Size: ").grid(row=3, column=0)
     filler = tkinter.Label(main, text="-----------------------------------------------------------------|").grid(row=1, column=0, columnspan=3)
-    filler2 = tkinter.Label(main, text="                (100 - 800)                |     ").grid(row=2, column=2)
-    filler3 = tkinter.Label(main, text="    (small, medium, or large)  |     ").grid(row=3, column=2)
-    filler4 = tkinter.Label(main, text="-----------------------------------------------------------------|").grid(row=4, column=0, columnspan=3)
-    fillerSide = tkinter.Label(main, text="          ").grid(row=0, column=4)
-    fillerBottom = tkinter.Label(main, text="          ").grid(row=5, column=0)
-    fillerTop = tkinter.Label(main, text="          ").grid(row=0, column=0)
+    filler_2 = tkinter.Label(main, text="                (100 - 800)                |     ").grid(row=2, column=2)
+    filler_3 = tkinter.Label(main, text="    (small, medium, or large)  |     ").grid(row=3, column=2)
+    filler_4 = tkinter.Label(main, text="-----------------------------------------------------------------|").grid(row=4, column=0, columnspan=3)
+    filler_Side = tkinter.Label(main, text="          ").grid(row=0, column=4)
+    filler_Bottom = tkinter.Label(main, text="          ").grid(row=5, column=0)
+    filler_Top = tkinter.Label(main, text="          ").grid(row=0, column=0)
 
-    def printIt():
+    def Save_It():
         p = "yes"
-        draw2(p)
+        C_draw(p)
 
-    def draws():
+    def D_Save_It():
         p = "no"
-        draw2(p)
+        C_draw(p)
 
-    def draw2(p):
+    def C_draw(p):
         #function to initiate calculating and drawing the maze.
-        mazeSizeStr = mazeSEntry.get()
-        mazeSizec = stringToNumber.strToInt(mazeSizeStr)
+        maze_Size_Str = maze_S_Entry.get()
+        maze_Size_c = stringToNumber.strToInt(maze_Size_Str)
 
-        hallSizeStr = hallSEntry.get()
-        mazeSize = checkMazeSize(mazeSizec)
+        hall_Size_Str = hall_S_Entry.get()
+        maze_Size = check_Maze_Size(maze_Size_c)
 
-        if hallSizeStr.lower() == "small":
-            hallSize = 10
-        elif hallSizeStr.lower() == "medium":
-            hallSize = 25
-        elif hallSizeStr.lower() == "large":
-            hallSize = 50
+        if hall_Size_Str.lower() == "small":
+            hall_Size = 10
+        elif hall_Size_Str.lower() == "medium":
+            hall_Size = 25
+        elif hall_Size_Str.lower() == "large":
+            hall_Size = 50
         else:
             messagebox.showwarning("Invalid Hall Size Entry","Please enter small, medium, or large")
             return
 
-        if mazeSize == 0:
+        if maze_Size == 0:
             messagebox.showwarning("Invalid Maze Size Entry","Please enter a number between 100 and 800")
             return
 
-        print(mazeSize)
-        print(hallSize)
+        print(maze_Size)
+        print(hall_Size)
         main.iconify()
-        draw(mazeSize, hallSize, p)
+        draw(maze_Size, hall_Size, p)
         main.deiconify()
 
-    mazeSEntry = tkinter.Entry(main)
-    mazeSEntry.grid(row=2, column=1)
-    hallSEntry = tkinter.Entry(main)
-    hallSEntry.grid(row=3, column=1)
-    mazeSEntry.insert(0,'500')
-    hallSEntry.insert(0,'medium')
+    maze_S_Entry = tkinter.Entry(main)
+    maze_S_Entry.grid(row=2, column=1)
+    hall_S_Entry = tkinter.Entry(main)
+    hall_S_Entry.grid(row=3, column=1)
+    maze_S_Entry.insert(0,'500')
+    hall_S_Entry.insert(0,'medium')
 
-    drawMaze = tkinter.Button(main, text="Draw Maze", command=draws)
-    drawMaze.grid(row=2, column=3)
-    printMaze = tkinter.Button(main, text="Print Maze", command=printIt)
-    printMaze.grid(row=3, column=3)
+    draw_Maze = tkinter.Button(main, text="Draw Maze", command=D_Save_It)
+    draw_Maze.grid(row=2, column=3)
+    Save_Maze = tkinter.Button(main, text="Print Maze", command=Save_It)
+    Save_Maze.grid(row=3, column=3)
 
     quit = tkinter.Button(main, text="Quit", command=main.quit)
     quit.grid(row=4, column=3)
     tkinter.mainloop()
+# end of main
 if __name__ == '__main__':
     main()
