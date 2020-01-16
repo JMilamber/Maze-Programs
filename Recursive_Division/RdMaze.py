@@ -314,7 +314,7 @@ def draw(maze_S, hall_S, p):
             time.sleep(.5)
             a = a + .5
         if hall_S == 10 and maze_S > 150:
-            pass
+            time.sleep(.005)
         elif hall_S == 25:
             time.sleep(.05)
         elif maze_S < 700 and hall_S == 50:
