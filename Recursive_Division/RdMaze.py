@@ -310,17 +310,17 @@ def draw(maze_S, hall_S, p):
     for f in range(0,len(walls_list)):
         # draws the maze
         W = walls_list[f]
-        #if a < 3:
-            #time.sleep(.5)
-            #a = a + .5
-        #if hall_S == 10 and maze_S > 150:
-            #pass
-        #elif hall_S == 25:
-            #time.sleep(.05)
-        #elif maze_S < 700 and hall_S == 50:
-            #time.sleep(.08)
-        #elif maze_S > 650 and hall_S != 50:
-            #time.sleep(.3)
+        if a < 3:
+            time.sleep(.5)
+            a = a + .5
+        if hall_S == 10 and maze_S > 150:
+            pass
+        elif hall_S == 25:
+            time.sleep(.05)
+        elif maze_S < 700 and hall_S == 50:
+            time.sleep(.08)
+        elif maze_S > 650 and hall_S != 50:
+            time.sleep(.3)
         wall = Line(Point(W.get_X() + offset, W.get_Y() + offset), Point(W.get_X_1() + offset, W.get_Y_1()+ offset))
         wall.setFill(color_rgb(0, 0, 0))
         wall.setWidth(2)
