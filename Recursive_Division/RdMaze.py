@@ -4,15 +4,20 @@
 import os
 import random
 import time
-from Modules.graphics import *
-from Modules import CheckValue
-from Modules import pyautogui
 from Modules import stringToNumber
 import tkinter
-from tkinter import constants
-from tkinter import ttk
 from tkinter import messagebox
 from tkinter import simpledialog
+from Modules.graphics import *
+try:
+    import pyautogui
+except ImportError:
+    messagebox.showwarning("Missing pyautogui",
+                           "Please install pyautogui via:\n\n " +
+                           "'pip install pyautogui'")
+    exit = 1
+else:
+    exit = 0
 
 
 class Area:
@@ -480,4 +485,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if exit == 0:
+        main()
+    else:
+        pass
