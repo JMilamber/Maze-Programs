@@ -4,6 +4,15 @@
 import os
 import tkinter
 import subprocess
+try:
+    import pyautogui
+except ImportError:
+    messagebox.showwarning("Missing pyautogui",
+                           "Please install pyautogui via:\n\n " +
+                           "'pip install pyautogui'")
+    exit = 1
+else:
+    exit = 0
 
 
 def main():
@@ -65,4 +74,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if exit == 0:
+        main()
+    else:
+        pass

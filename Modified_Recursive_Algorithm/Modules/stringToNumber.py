@@ -1,24 +1,14 @@
 #       Author- Jacob Stringer
 #       Date started - 11/12/2019
-#       5dhf00
+
 
 def strToInt(value_str):
     value_int = 0
     valueInt_asStr = ""
     value_ToAdd = ""
     value_toCheck = ""
-    neg = False
-    num_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-"]
-    print(value_str)
-    dec = 0
-    dec2_check = 0
+    num_list = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     for i in range(0, len(value_str)):
-        if value_str[i] == "." and dec2_check == 0:
-            dec = len(value_str) - i
-            dec2_check = dec2_check + 1
-
-
-    for i in range(0, len(value_str) - dec):
         value_toCheck = value_str[i]
         if value_toCheck in num_list:
             valueInt_asStr = valueInt_asStr + value_toCheck
@@ -26,7 +16,6 @@ def strToInt(value_str):
             pass
     value_str = valueInt_asStr
     for i in range(0, len(value_str)):
-
         #iterates through the entire string
         value_ToAdd = value_str[i]
         #value to hold the current char being investigated
@@ -52,13 +41,8 @@ def strToInt(value_str):
             value_int = value_int + (8 * (10 ** (len(value_str)-(i + 1))))
         elif value_ToAdd == "9":
             value_int = value_int + (9 * (10 ** (len(value_str)-(i + 1))))
-        elif value_ToAdd == "-":
-            neg = True
         else:
             pass
-
-    if neg == True:
-        value_int = value_int * -1
     return value_int
 #end strToInt
 
