@@ -1,15 +1,16 @@
 #       Author- Jacob Stringer
 #       Date started - August 2019
 
-from graphics import *
+
 import os
 import random
 import time
 import math
-import stringToNumber
 import tkinter
 from tkinter import messagebox
 from tkinter import simpledialog
+from Modules import stringToNumber
+from Modules.graphics import *
 
 try:
     import pyautogui
