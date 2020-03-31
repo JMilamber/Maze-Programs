@@ -49,9 +49,7 @@ def main():
     fillerMiddleBottom = tkinter.Label(main, text="             ").grid(
         row=6, column=2, columnspan=2
     )
-    fillerSide = tkinter.Label(main, text="             ").grid(
-        row=7, column=7
-    )
+    fillerSide = tkinter.Label(main, text="             ").grid(row=7, column=7)
     fillerSide1 = tkinter.Label(main, text="                ").grid(
         row=0, column=0
     )

@@ -460,9 +460,7 @@ def main():
         + "------------------------|",
     ).grid(row=4, column=0, columnspan=3)
     filler_Side = tkinter.Label(main, text="          ").grid(row=0, column=4)
-    filler_Bottom = tkinter.Label(main, text="          ").grid(
-        row=5, column=0
-    )
+    filler_Bottom = tkinter.Label(main, text="          ").grid(row=5, column=0)
     filler_Top = tkinter.Label(main, text="          ").grid(row=0, column=0)
 
     def Save_It():
