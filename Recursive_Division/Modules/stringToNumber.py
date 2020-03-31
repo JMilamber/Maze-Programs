@@ -54,7 +54,7 @@ def main():
     print("\n     stringToNumber contains a single method called strToInt")
     print(
         "\n     That method takes a single parameter, a string that consists "
-        + "solely of numbers"
+        + "of any combination of numbers and characters"
     )
     print("\n     I.e : x = stringToNumber.strToInt('5067')")
     print(

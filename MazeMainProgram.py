@@ -54,7 +54,7 @@ def main():
         row=0, column=0
     )
     ModifiedRecursiveAlgorithm = tkinter.Button(
-        main, text="Modified Recursive" + "Backtracker Algorithm", command=MRBA
+        main, text="Modified Recursive " + "Backtracker Algorithm", command=MRBA
     )
     ModifiedRecursiveAlgorithm.grid(row=3, column=2, columnspan=2)
     ModifiedRecursiveAlgorithm = tkinter.Button(
