@@ -23,9 +23,9 @@ def main():
     working_Dir = os.getcwd()
 
     def MRBA():
-        directory_change = working_Dir + "/Modified_Recursive_Algorithm"
+        directory_change = working_Dir + "/Randomized_Recursive_Backtracker"
         os.chdir(directory_change)
-        subprocess.Popen(["Maze.py"], shell=True)
+        subprocess.Popen(["RRBMaze.py"], shell=True)
         os.chdir(working_Dir)
 
     def RDA():
