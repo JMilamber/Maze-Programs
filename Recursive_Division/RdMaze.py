@@ -220,7 +220,9 @@ def draw(maze_S, hall_S, p):
     # sets the location of the window
     win.setBackground(color_rgb(255, 255, 255))
     # sets the background to white
-    rect = Rectangle(Point(offset, offset), Point(maze_S + offset, maze_S + offset))
+    rect = Rectangle(
+        Point(offset, offset), Point(maze_S + offset, maze_S + offset)
+    )
     # creates a rectangle object that the maze will be drawn on.
     rect.setFill(color_rgb(240, 240, 240))
     # sets the color to just off-white
@@ -257,7 +259,8 @@ def draw(maze_S, hall_S, p):
     first_Line.setWidth(2)
     first_Line.draw(win)
     start_Msg = Text(
-        Point(offset / 2, offset + (hall_S * maze_Start) + (hall_S / 2)), "Start->"
+        Point(offset / 2, offset + (hall_S * maze_Start) + (hall_S / 2)),
+        "Start->",
     )
     start_Msg.draw(win)
 
@@ -269,7 +272,9 @@ def draw(maze_S, hall_S, p):
     first_Line.setWidth(2)
     first_Line.draw(win)
     end_Msg = Text(
-        Point(offset * 1.5 + maze_S, offset + (hall_S * maze_End) + (hall_S / 2)),
+        Point(
+            offset * 1.5 + maze_S, offset + (hall_S * maze_End) + (hall_S / 2)
+        ),
         "<-End",
     )
     end_Msg.draw(win)
@@ -368,7 +373,8 @@ def draw(maze_S, hall_S, p):
 
     message.undraw()
     message = Text(
-        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)), "Drawing..."
+        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)),
+        "Drawing...",
     )
     message.draw(win)
 
@@ -407,7 +413,8 @@ def draw(maze_S, hall_S, p):
     message.undraw()
     # draws a message indicating to the suer that the maze has finished
     message = Text(
-        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)), "Finished!"
+        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)),
+        "Finished!",
     )
     message.draw(win)
 
@@ -433,10 +440,13 @@ def main():
         row=0, column=1, columnspan=1
     )
     maze_Label = tkinter.Label(main, text=" Maze Size:").grid(row=2, column=0)
-    hall_Label = tkinter.Label(main, text="   Hall Size: ").grid(row=3, column=0)
+    hall_Label = tkinter.Label(main, text="   Hall Size: ").grid(
+        row=3, column=0
+    )
     filler = tkinter.Label(
         main,
-        text="-------------------------------------" + "----------------------------|",
+        text="-------------------------------------"
+        + "----------------------------|",
     ).grid(row=1, column=0, columnspan=3)
     filler_2 = tkinter.Label(
         main, text="                (100 - 800)        " + "        |     "
@@ -446,10 +456,13 @@ def main():
     ).grid(row=3, column=2)
     filler_4 = tkinter.Label(
         main,
-        text="-----------------------------------------" + "------------------------|",
+        text="-----------------------------------------"
+        + "------------------------|",
     ).grid(row=4, column=0, columnspan=3)
     filler_Side = tkinter.Label(main, text="          ").grid(row=0, column=4)
-    filler_Bottom = tkinter.Label(main, text="          ").grid(row=5, column=0)
+    filler_Bottom = tkinter.Label(main, text="          ").grid(
+        row=5, column=0
+    )
     filler_Top = tkinter.Label(main, text="          ").grid(row=0, column=0)
 
     def Save_It():
@@ -476,13 +489,15 @@ def main():
             hall_Size = 50
         else:
             messagebox.showwarning(
-                "Invalid Hall Size Entry", "Please enter small, medium, or large"
+                "Invalid Hall Size Entry",
+                "Please enter small, medium, or large",
             )
             return
 
         if maze_Size == 0:
             messagebox.showwarning(
-                "Invalid Maze Size Entry", "Please enter a number between 100 and 800"
+                "Invalid Maze Size Entry",
+                "Please enter a number between 100 and 800",
             )
             return
 
