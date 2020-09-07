@@ -11,7 +11,28 @@ from tkinter import simpledialog
 from Modules import stringToNumber
 from Modules.graphics import *
 
-# noqa: F405
+
+class Set:
+    def __init__(self, num_init, cell_init):
+        self.number = num_init
+        self.cells = {}
+        self.cells[cell_init.get_Id()] = cell_init
+        self.num_of_cells = 1
+
+    def addCellToSet(self, cell):
+        # lists start at id 0 so the number of cells != the id of the first cell
+        # rather it == the id of the next cell
+        self.num_of_cells = num_of_cells + 1
+        self.cells[cell.get_Id()] = cell
+        cell.set_Set(self.number)
+
+    def isCellInSet(self, cell):
+        try:
+            cells.get(cell.get_Id())
+        except Exception as e:  # noqa: F841
+            return False
+        else:
+            return True
 
 
 class Cell:
@@ -19,6 +40,7 @@ class Cell:
         self.x = x_init
         self.y = y_init
         self.set = set_init
+        self.Id = (x * 10) + y
 
     def get_X(self):
         return self.x
@@ -26,8 +48,14 @@ class Cell:
     def get_Y(self):
         return self.y
 
+    def get_Id(self):
+        return self.Id
+
     def get_Set(self):
         return self.set
+
+    def set_Set(self, new_set):
+        self.set = new_set
 
 
 class Wall:
@@ -115,9 +143,22 @@ def draw(maze_S, hall_S, p):
     message.draw(win)
 
     walls_list = []
+    cell_list = []
     m_H = maze_S / hall_S
     maze_Start = random.randint(0, (m_H) - 1)
     maze_End = random.randint(0, (m_H) - 1)
+    x = 0
+    y = 0
+
+    for i in range(m_H * m_H):
+        cell_list.append(Cell(x, y, -1))
+        if y == m_H:
+            x = x + 1
+            y = 0
+        else:
+            y = y + 1
+
+    # while (cell_list.length > 0):
 
     start = Line(
         Point(offset, offset + (hall_S * maze_Start) + hall_S - 1),
