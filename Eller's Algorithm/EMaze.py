@@ -24,7 +24,7 @@ class Set:
         # rather it == the id of the next cell
         self.num_of_cells = num_of_cells + 1
         self.cells[cell.get_Id()] = cell
-        cell.set_Set(self.number)
+        cell.set_Set(self)
 
     def isCellInSet(self, cell):
         try:
@@ -35,11 +35,22 @@ class Set:
             return True
 
 
+class Id:
+    def __init__(self):
+        self.id = 0
+
+    def getId(self):
+        return self.id
+
+    def incrementId(self):
+        self.id = self.id + 1
+
+
 class Cell:
     def __init__(self, x_init, y_init, set_init):
         self.x = x_init
         self.y = y_init
-        self.set = set_init
+        self.set
         self.Id = (x * 10) + y
 
     def get_X(self):
@@ -78,7 +89,7 @@ class Wall:
         return self.y_1
 
 
-def Save_M(win, m, h):
+def SaveM(win, m, h):
     maze_name = tkinter.simpledialog.askstring("Maze Title", "New Maze = ")
     time.sleep(0.25)
     working_Dir = os.getcwd()
@@ -90,7 +101,7 @@ def Save_M(win, m, h):
     os.chdir(working_Dir)
 
 
-def check_Maze_Size(m_S):
+def checkMazeSize(m_S):
     print("in check maze size")
     if 100 <= m_S <= 800:
         # checks if the mazeSize is a usable value.
@@ -110,7 +121,20 @@ def check_Maze_Size(m_S):
     return m_S
 
 
-# End of getMazeSize()
+# End of checkMazeSize()
+
+
+def AddCellsToSets(cell_list, m_H, next_set_Id, set_list, row):
+    if row == 1:
+        for i in range(0, m_H):
+            cell = cell_list[i]
+            set_list[i] = Set(next_set_Id.getId(), cell)
+            cell.set_Set(set_list[i])
+    else:
+        # need to work out the plan for step 2 of Jams buck's explanation which
+        # will occur here
+        for i in range(0, m_H):
+            cell = cell_list[row]
 
 
 def draw(maze_S, hall_S, p):
@@ -144,19 +168,22 @@ def draw(maze_S, hall_S, p):
 
     walls_list = []
     cell_list = []
+    set_list = []
     m_H = maze_S / hall_S
     maze_Start = random.randint(0, (m_H) - 1)
     maze_End = random.randint(0, (m_H) - 1)
+    next_set_Id = Id()
     x = 0
     y = 0
 
     for i in range(m_H * m_H):
         cell_list.append(Cell(x, y, -1))
-        if y == m_H:
-            x = x + 1
-            y = 0
-        else:
+        x = x + 1
+        if x == m_H:
             y = y + 1
+            x = 0
+
+    AddCellRowToSets(cell_list, m_H, next_set_Id, set_list, 1)
 
     # while (cell_list.length > 0):
 
@@ -204,7 +231,7 @@ def draw(maze_S, hall_S, p):
     )
     message.draw(win)
     if p.lower() == "yes":
-        Save_M(win, maze_S, hall_S)
+        SaveM(win, maze_S, hall_S)
 
     if p.lower() == "yes":
         pass
@@ -261,7 +288,7 @@ def main():
         maze_Size_c = stringToNumber.strToInt(maze_Size_Str)
 
         hall_Size_Str = hall_S_Entry.get()
-        maze_Size = check_Maze_Size(maze_Size_c)
+        maze_Size = checkMazeSize(maze_Size_c)
 
         if hall_Size_Str.lower() == "small":
             hall_Size = 10
