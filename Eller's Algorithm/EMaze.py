@@ -65,6 +65,8 @@ class Cell:
         self.y = y_init
         self.set
         self.Id = (x * 10) + y
+        # walls in the list go as follows: top, right, bottom, left
+        self.walls = []
 
     def get_X(self):
         return self.x
@@ -80,6 +82,12 @@ class Cell:
 
     def set_Set(self, new_set):
         self.set = new_set
+
+    def addWall(self, wall, wall_num):
+        self.walls[wall_num] = wall
+
+    def getWall(self, wall_num):
+        return self.walls[wall_num]
 
 
 class Wall:
@@ -138,24 +146,33 @@ def checkMazeSize(m_S):
 
 
 def AddCellsToSets(cell_list, m_H, next_set_Id, set_list, row):
-    if row == 1:
-        # step 1 of Jamis Buck's explanation
-        for i in range(0, m_H):
-            cell = cell_list[i]
+    for i in range(0, m_H):
+        cell = cell_list[i + ((row - 1) * m_h)]
+        try:
+            cell_Set = cell.get_Set()
+        except Exception as e:  # noqa F841
+            cell.set_Set(Set(next_set_Id.getId()))
             set_list[next_set_Id.getId()] = Set(next_set_Id.getId(), cell)
             next_set_Id.incrementId()
-            cell.set_Set(set_list[i])
-    else:
-        # need to work out the plan for step 2 of Jamis buck's explanation which
-        # will occur here
-        for i in range(0, m_H):
-            cell = cell_list[i + ((row - 1) * m_h)]
-            try:
-                cell_Set = cell.get_Set()
-            except Exception as e:  # noqa F841
-                cell.set_Set(Set(next_set_Id.getId()))
-                next_set_Id.incrementId()
-                cell_Set = cell.get_Set()
+            cell_Set = cell.get_Set()
+
+
+def ConnectSetsInRow(cell_list, m_H, set_list, row):
+    for i in raneg(0, m_H):
+        # 8 - i below so that we start on the right side of the row and merge
+        cellBase = cell_list[8 - i + (row - 1) * m_h]
+        cellCheck = cell_list[8 - i + ((row - 1) * m_h) - 1]
+        if cellBase.get_Set() != cellCheck.get_Set():
+            do_or_dont = ["do", "dont"]
+            choice = random.choice(do_or_dont)
+            if choice == "do":
+                cellBase.addWall(
+                    Wall(
+                        cellBase.get_X(),
+                        cellBase.get_Y(),
+                        cellBase.get_X() + 1,
+                    )
+                )
 
 
 def draw(maze_S, hall_S, p):
