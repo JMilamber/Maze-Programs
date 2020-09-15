@@ -145,7 +145,7 @@ def checkMazeSize(m_S):
 # End of checkMazeSize()
 
 
-def AddCellsToSets(cell_list, m_H, next_set_Id, set_list, row):
+def AddCellsToSets(cell_list, m_H, next_set_Id, set_list, row, hall_S):
     for i in range(0, m_H):
         cell = cell_list[i + ((row - 1) * m_h)]
         try:
@@ -155,6 +155,8 @@ def AddCellsToSets(cell_list, m_H, next_set_Id, set_list, row):
             set_list[next_set_Id.getId()] = Set(next_set_Id.getId(), cell)
             next_set_Id.incrementId()
             cell_Set = cell.get_Set()
+
+    ConnectSetsInRow(cell_list, m_H, set_list, row, hall_S)
 
 
 def ConnectSetsInRow(cell_list, m_H, set_list, row):
@@ -171,6 +173,7 @@ def ConnectSetsInRow(cell_list, m_H, set_list, row):
                         cellBase.get_X(),
                         cellBase.get_Y(),
                         cellBase.get_X() + 1,
+                        cellBase.get_Y(),
                     )
                 )
 
@@ -221,7 +224,7 @@ def draw(maze_S, hall_S, p):
             y = y + 1
             x = 0
 
-    AddCellRowToSets(cell_list, m_H, next_set_Id, set_list, 1)
+    AddCellRowToSets(cell_list, m_H, next_set_Id, set_list, 1, hall_S)
 
     # while (cell_list.length > 0):
 
