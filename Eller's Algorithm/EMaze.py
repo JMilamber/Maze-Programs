@@ -11,8 +11,22 @@ from tkinter import simpledialog
 from Modules import stringToNumber
 from Modules.graphics import *
 
+try:
+    import pyautogui
+except ImportError:
+    messagebox.showwarning(
+        "Missing pyautogui",
+        "Please install pyautogui via:\n\n " + "'pip install pyautogui'",
+    )
+    exit = 1
+else:
+    exit = 0
+
 
 class Set:
+    # defines a set of cells, made up of cells in multiple rows.
+    # used exclusively for calculating the maze as all cells eventually end
+    # up part of the same set
     def __init__(self, num_init, cell_init):
         self.number = num_init
         self.cells = {}
@@ -31,8 +45,7 @@ class Set:
             cells.get(cell.get_Id())
         except Exception as e:  # noqa: F841
             return False
-        else:
-            return True
+        return True
 
 
 class Id:
@@ -126,15 +139,23 @@ def checkMazeSize(m_S):
 
 def AddCellsToSets(cell_list, m_H, next_set_Id, set_list, row):
     if row == 1:
+        # step 1 of Jamis Buck's explanation
         for i in range(0, m_H):
             cell = cell_list[i]
-            set_list[i] = Set(next_set_Id.getId(), cell)
+            set_list[next_set_Id.getId()] = Set(next_set_Id.getId(), cell)
+            next_set_Id.incrementId()
             cell.set_Set(set_list[i])
     else:
-        # need to work out the plan for step 2 of Jams buck's explanation which
+        # need to work out the plan for step 2 of Jamis buck's explanation which
         # will occur here
         for i in range(0, m_H):
-            cell = cell_list[row]
+            cell = cell_list[i + ((row - 1) * m_h)]
+            try:
+                cell_Set = cell.get_Set()
+            except Exception as e:  # noqa F841
+                cell.set_Set(Set(next_set_Id.getId()))
+                next_set_Id.incrementId()
+                cell_Set = cell.get_Set()
 
 
 def draw(maze_S, hall_S, p):
