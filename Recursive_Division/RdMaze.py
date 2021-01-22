@@ -8,7 +8,7 @@ from Modules import stringToNumber
 import tkinter
 from tkinter import messagebox
 from tkinter import simpledialog
-from Modules.graphics import *
+from Recursive_Division.Modules.graphics import *
 
 try:
     import pyautogui

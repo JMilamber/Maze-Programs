@@ -9,7 +9,7 @@ import math
 import tkinter
 from tkinter import messagebox
 from tkinter import simpledialog
-from Modules import stringToNumber
+from Modules.stringToNumber import strToInt
 from Modules.graphics import *
 
 try:
@@ -570,9 +570,9 @@ def main():
     def C_draw(p):
         maze_Size_Str = maze_S_Entry.get()
         hall_Size_Str = hall_S_Entry.get()
-        maze_Size_c = stringToNumber.strToInt(maze_Size_Str)
+        maze_Size_c = strToInt(maze_Size_Str)
         print(maze_Size_c)
-        hall_Size_c = stringToNumber.strToInt(hall_Size_Str)
+        hall_Size_c = strToInt(hall_Size_Str)
         print(hall_Size_c)
         maze_Size = check_Maze_Size(maze_Size_c)
         hall_Size = check_Hall_Size(hall_Size_c)
