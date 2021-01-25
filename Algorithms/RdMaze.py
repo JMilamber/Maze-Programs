@@ -4,11 +4,11 @@
 import os
 import random
 import time
-from Modules import stringToNumber
 import tkinter
 from tkinter import messagebox
 from tkinter import simpledialog
-from Modules.graphics import *
+from Modules import stringToNumber
+from Modules import graphics
 
 try:
     import pyautogui
@@ -214,24 +214,29 @@ def draw(maze_S, hall_S, p):
     if offset < 50:
         offset = 50
         # ensures a big enoughoffset for the start and end text.
-    win = GraphWin("Maze Window", maze_S + offset * 2, maze_S + offset * 2)
+    win = graphics.GraphWin(
+        "Maze Window", maze_S + offset * 2, maze_S + offset * 2
+    )
     # creates window
     win.windowGeo(maze_S + offset * 2, maze_S + offset * 2, 50, 50)
     # sets the location of the window
-    win.setBackground(color_rgb(255, 255, 255))
+    win.setBackground(graphics.color_rgb(255, 255, 255))
     # sets the background to white
-    rect = Rectangle(
-        Point(offset, offset), Point(maze_S + offset, maze_S + offset)
+    rect = graphics.Rectangle(
+        graphics.Point(offset, offset),
+        graphics.Point(maze_S + offset, maze_S + offset),
     )
     # creates a rectangle object that the maze will be drawn on.
-    rect.setFill(color_rgb(240, 240, 240))
+    rect.setFill(graphics.color_rgb(240, 240, 240))
     # sets the color to just off-white
-    rect.setOutline(color_rgb(0, 0, 0))
+    rect.setOutline(graphics.color_rgb(0, 0, 0))
     # sets the outline color to black
     rect.setWidth(2)
     rect.draw(win)
-    message = Text(
-        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)),
+    message = graphics.Text(
+        graphics.Point(
+            maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)
+        ),
         "Calculating...",
     )
     message.draw(win)
@@ -251,28 +256,32 @@ def draw(maze_S, hall_S, p):
     maze_Start = random.randint(0, (m_H) - 1)
     maze_End = random.randint(0, (m_H) - 1)
 
-    first_Line = Line(
-        Point(offset, offset + (hall_S * maze_Start) + hall_S - 1),
-        Point(offset, offset + (hall_S * maze_Start) + 1),
+    first_Line = graphics.Line(
+        graphics.Point(offset, offset + (hall_S * maze_Start) + hall_S - 1),
+        graphics.Point(offset, offset + (hall_S * maze_Start) + 1),
     )
-    first_Line.setFill(color_rgb(240, 240, 240))
+    first_Line.setFill(graphics.color_rgb(240, 240, 240))
     first_Line.setWidth(2)
     first_Line.draw(win)
-    start_Msg = Text(
-        Point(offset / 2, offset + (hall_S * maze_Start) + (hall_S / 2)),
+    start_Msg = graphics.Text(
+        graphics.Point(
+            offset / 2, offset + (hall_S * maze_Start) + (hall_S / 2)
+        ),
         "Start->",
     )
     start_Msg.draw(win)
 
-    first_Line = Line(
-        Point(offset + maze_S, offset + (hall_S * maze_End) + 1),
-        Point(offset + maze_S, offset + (hall_S * maze_End) + hall_S - 1),
+    first_Line = graphics.Line(
+        graphics.Point(offset + maze_S, offset + (hall_S * maze_End) + 1),
+        graphics.Point(
+            offset + maze_S, offset + (hall_S * maze_End) + hall_S - 1
+        ),
     )
-    first_Line.setFill(color_rgb(240, 240, 240))
+    first_Line.setFill(graphics.color_rgb(240, 240, 240))
     first_Line.setWidth(2)
     first_Line.draw(win)
-    end_Msg = Text(
-        Point(
+    end_Msg = graphics.Text(
+        graphics.Point(
             offset * 1.5 + maze_S, offset + (hall_S * maze_End) + (hall_S / 2)
         ),
         "<-End",
@@ -372,8 +381,10 @@ def draw(maze_S, hall_S, p):
     print("Escaped")
 
     message.undraw()
-    message = Text(
-        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)),
+    message = graphics.Text(
+        graphics.Point(
+            maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)
+        ),
         "Drawing...",
     )
     message.draw(win)
@@ -393,27 +404,29 @@ def draw(maze_S, hall_S, p):
             time.sleep(0.08)
         elif maze_S > 650 and hall_S != 50:
             time.sleep(0.3)
-        wall = Line(
-            Point(W.get_X() + offset, W.get_Y() + offset),
-            Point(W.get_X_1() + offset, W.get_Y_1() + offset),
+        wall = graphics.Line(
+            graphics.Point(W.get_X() + offset, W.get_Y() + offset),
+            graphics.Point(W.get_X_1() + offset, W.get_Y_1() + offset),
         )
-        wall.setFill(color_rgb(0, 0, 0))
+        wall.setFill(graphics.color_rgb(0, 0, 0))
         wall.setWidth(2)
         wall.draw(win)
 
         P = passage_list[f]
-        passage = Line(
-            Point(P.get_X() + offset, P.get_Y() + offset),
-            Point(P.get_X_1() + offset, P.get_Y_1() + offset),
+        passage = graphics.Line(
+            graphics.Point(P.get_X() + offset, P.get_Y() + offset),
+            graphics.Point(P.get_X_1() + offset, P.get_Y_1() + offset),
         )
-        passage.setFill(color_rgb(240, 240, 240))
+        passage.setFill(graphics.color_rgb(240, 240, 240))
         passage.setWidth(2)
         passage.draw(win)
 
     message.undraw()
     # draws a message indicating to the suer that the maze has finished
-    message = Text(
-        Point(maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)),
+    message = graphics.Text(
+        graphics.Point(
+            maze_S / 2 + offset, maze_S + (offset * 2) - (offset / 2)
+        ),
         "Finished!",
     )
     message.draw(win)
